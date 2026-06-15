@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nome da Organização</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .site-title {
+      font-size: 26px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 0.5px solid #d0cec7;
+      margin: 1.5rem 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    nav a {
+      font-size: 14px;
+      color: #888;
+      text-decoration: none;
+      padding-bottom: 2px;
+      cursor: pointer;
+    }
+
+    nav a.active {
+      color: #1a1a1a;
+      border-bottom: 1.5px solid #1a1a1a;
+    }
+
+    .description {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #888;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .profile-card {
+      background: #c0392b;
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      min-height: 120px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: opacity 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+
+    .profile-card:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fdecea;
+    }
+
+    .card-role {
+      font-size: 12px;
+      color: #f0b0ab;
+      margin-top: 2px;
+    }
+
+    .card-dept {
+      font-size: 11px;
+      color: #e88880;
+      margin-top: 1px;
+    }
+
+    /* Loading and empty states */
+    .state-msg {
+      font-size: 14px;
+      color: #888;
+      padding: 2rem 0;
+    }
+
+    /* Departments page */
+    .dept-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 640px;
+    }
+
+    .dept-item {
+      border-left: 2px solid #c0392b;
+      padding-left: 1rem;
+    }
+
+    .dept-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.25rem;
+    }
+
+    .dept-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Hidden view utility */
+    .view { display: none; }
+    .view.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <p class="site-title">Nome da Organização</p>
+    <hr>
+
+    <nav>
+      <a onclick="showView('home')" id="nav-home" class="active">Início</a>
+      <a onclick="showView('departments')" id="nav-departments">Departamentos</a>
+    </nav>
+
+    <!-- HOME VIEW -->
+    <div id="view-home" class="view active">
+      <p class="description">
+        Breve descrição da organização ou da finalidade desta página.
+        Pode explicar o propósito da ferramenta, quem a utiliza e como navegar pelos perfis.
+      </p>
+
+      <p class="section-label">Passaportes</p>
+
+      <div class="profiles-grid" id="profiles-grid">
+        <p class="state-msg">A carregar perfis…</p>
+      </div>
+    </div>
+
+    <!-- DEPARTMENTS VIEW -->
+    <div id="view-departments" class="view">
+      <p class="description">
+        Conheça os departamentos da organização.
+      </p>
+
+      <p class="section-label">Departamentos</p>
+
+      <div class="dept-list" id="dept-list">
+        <!-- Departments are hardcoded here by the developer -->
+        <div class="dept-item">
+          <p class="dept-name">Nome do Departamento</p>
+          <p class="dept-desc">Descrição do departamento. Explica o que faz, quem o compõe e o seu papel na organização.</p>
+        </div>
+        <div class="dept-item">
+          <p class="dept-name">Nome do Departamento</p>
+          <p class="dept-desc">Descrição do departamento. Explica o que faz, quem o compõe e o seu papel na organização.</p>
+        </div>
+        <div class="dept-item">
+          <p class="dept-name">Nome do Departamento</p>
+          <p class="dept-desc">Descrição do departamento. Explica o que faz, quem o compõe e o seu papel na organização.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── CONFIGURATION ─────────────────────────────────────────────
+    // Replace these three values with your own before deploying.
+    const GITHUB_USER = 'your-username';
+    const GITHUB_REPO = 'your-repo-name';
+    const PROFILES_FILE = 'profiles.json';
+    // ───────────────────────────────────────────────────────────────
+
+    const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${PROFILES_FILE}`;
+
+    // Navigation
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      document.getElementById('view-' + name).classList.add('active');
+      document.getElementById('nav-' + name).classList.add('active');
+    }
+
+    // Fetch and render profile cards
+    async function loadProfiles() {
+      const grid = document.getElementById('profiles-grid');
+
+      try {
+        const res = await fetch(RAW_URL + '?t=' + Date.now()); // bust cache
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const profiles = await res.json();
+
+        if (profiles.length === 0) {
+          grid.innerHTML = '<p class="state-msg">Nenhum perfil encontrado.</p>';
+          return;
+        }
+
+        grid.innerHTML = '';
+        profiles.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'profile-card';
+          card.setAttribute('role', 'button');
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('aria-label', `Ver perfil de ${p.name}`);
+          card.innerHTML = `
+            <p class="card-name">${p.name}</p>
+            <p class="card-role">${p.role}</p>
+            <p class="card-dept">${p.department}</p>
+          `;
+          card.addEventListener('click', () => openProfile(p));
+          card.addEventListener('keydown', e => { if (e.key === 'Enter') openProfile(p); });
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        grid.innerHTML = '<p class="state-msg">Não foi possível carregar os perfis. Verifique a sua ligação.</p>';
+        console.error(err);
+      }
+    }
+
+    // Placeholder — profile detail page comes in the next build step
+    function openProfile(profile) {
+      alert(`Perfil de ${profile.name} (a implementar)`);
+    }
+
+    loadProfiles();
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "001",
+    "name": "Ana Costa",
+    "role": "Designer",
+    "department": "Criativo",
+    "passwordHash": "",
+    "bio": "",
+    "photos": []
+  },
+  {
+    "id": "002",
+    "name": "João Silva",
+    "role": "Desenvolvedor",
+    "department": "Tecnologia",
+    "passwordHash": "",
+    "bio": "",
+    "photos": []
+  },
+  {
+    "id": "003",
+    "name": "Mariana Ferreira",
+    "role": "Gestora de Projeto",
+    "department": "Operações",
+    "passwordHash": "",
+    "bio": "",
+    "photos": []
+  }
+]
