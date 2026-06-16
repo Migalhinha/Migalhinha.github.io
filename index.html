@@ -218,7 +218,13 @@
       document.getElementById('view-' + name).classList.add('active');
       document.getElementById('nav-' + name).classList.add('active');
     }
-
+    
+    const redirect = sessionStorage.getItem('redirect');
+    if (redirect) {
+      sessionStorage.removeItem('redirect');
+      history.replaceState({}, '', redirect);
+    }
+    
     // Fetch and render profile cards
     async function loadProfiles() {
       const grid = document.getElementById('profiles-grid');
