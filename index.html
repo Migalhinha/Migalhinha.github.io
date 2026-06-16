@@ -258,11 +258,17 @@
 
     // Placeholder — profile detail page comes in the next build step
     function openProfile(profile) {
+      history.pushState({ profile }, '', '/' + encodeURIComponent(profile.name));
+      renderProfile(profile);
+    }
+    
+    function renderProfile(profile) {
+      document.querySelector('.page').style.display = 'none';
       const page = document.createElement('div');
-      page.style.cssText = 'position:fixed;inset:0;background:#f5f5f3;overflow-y:auto;z-index:100;';
+      page.id = 'profile-page';
       page.innerHTML = `
         <div style="max-width:640px;margin:0 auto;padding:3rem 2rem;">
-          <a onclick="this.closest('[style]').remove()" style="font-size:14px;color:#888;cursor:pointer;text-decoration:none;">← Voltar</a>
+          <a onclick="closePage()" style="font-size:14px;color:#888;cursor:pointer;">← Voltar</a>
           <hr style="border:none;border-top:0.5px solid #d0cec7;margin:1.5rem 0;">
           <p style="font-size:22px;font-weight:500;color:#1a1a1a;margin-bottom:0.25rem;">${profile.name}</p>
           <p style="font-size:14px;color:#888;margin-bottom:0.125rem;">${profile.role}</p>
@@ -278,6 +284,22 @@
       `;
       document.body.appendChild(page);
     }
+    
+    function closePage() {
+      document.getElementById('profile-page')?.remove();
+      document.querySelector('.page').style.display = '';
+      history.pushState({}, '', '/');
+    }
+    
+    window.addEventListener('popstate', e => {
+      if (e.state?.profile) {
+        document.getElementById('profile-page')?.remove();
+        renderProfile(e.state.profile);
+      } else {
+        document.getElementById('profile-page')?.remove();
+        document.querySelector('.page').style.display = '';
+      }
+    });
 
     loadProfiles();
   </script>
